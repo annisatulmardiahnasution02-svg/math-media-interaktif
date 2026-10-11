@@ -104,6 +104,62 @@
             box-shadow: 2px 2px 0px var(--primary-dark);
         }
 
+        /* Cover Screen Style */
+        .cover-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            z-index: 5;
+        }
+        .cover-logo-badge {
+            background: var(--krem-pita);
+            border: 3px solid var(--primary-dark);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: var(--font-title);
+            color: var(--primary-dark);
+            box-shadow: 3px 3px 0px var(--primary-dark);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        .cover-title {
+            font-size: clamp(36px, 7vw, 64px);
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+        .cover-subtitle {
+            background: white;
+            border: 3px solid var(--primary-dark);
+            display: inline-block;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            box-shadow: 4px 4px 0px var(--primary-dark);
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .btn-mulai-cover {
+            background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
+            color: white;
+            font-family: var(--font-title);
+            font-size: 28px;
+            padding: 16px 44px;
+            border-radius: 28px;
+            border: 4px solid var(--primary-dark);
+            box-shadow: 0 6px 0px var(--primary-dark), 0 10px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            animation: pulseBtn 2s infinite ease-in-out;
+        }
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* Overlay & Toast */
         #toast-container {
             position: fixed;
@@ -343,10 +399,6 @@
             cursor: pointer;
             animation: pulseBtn 2s infinite ease-in-out;
         }
-        @keyframes pulseBtn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
 
         .missions-grid {
             display: grid;
@@ -468,6 +520,19 @@
     <div id="toast-container"></div>
 
     <div id="app-container">
+        <!-- 0. COVER SCREEN (Halaman Pembuka) -->
+        <div id="room-cover" class="screen active">
+            <div class="cover-content">
+                <div class="cover-logo-badge">🛵 MATH-O-ANTAR</div>
+                <h1 class="cover-title">LKM DIGITAL BERBASIS PMRI</h1>
+                <div class="cover-subtitle">Materi Fungsi Kuadrat • Matematika Kelas X SMA</div>
+                <p style="font-weight: 700; color: var(--primary-dark); margin-bottom: 24px; font-size: 16px; max-width: 480px;">
+                    Jelajahi keseruan matematika melalui konteks layanan pesan-antar makanan online bersama Toko Pempek Pak Raden!
+                </p>
+                <button class="btn-mulai-cover" onclick="handleCoverMulai()">MULAI PETUALANGAN</button>
+            </div>
+        </div>
+
         <!-- ONBOARDING / PROFIL MODAL -->
         <div id="profile-modal-backdrop" class="overlay-backdrop" style="display: none;">
             <div class="overlay-box">
@@ -513,8 +578,8 @@
             </div>
         </div>
 
-        <!-- 1. BERANDA SCREEN -->
-        <div id="room-beranda" class="screen active">
+        <!-- 1. BERANDA SCREEN (Dashboard Utama) -->
+        <div id="room-beranda" class="screen">
             <div class="beranda-header">
                 <div class="badge-logo">🛵 MATH-O-ANTAR</div>
                 <div class="top-btns">
@@ -699,8 +764,9 @@
         // Inisialisasi saat halaman dimuat
         window.addEventListener('DOMContentLoaded', () => {
             loadUserData();
-            checkOnboarding();
             updateMissionLocks();
+            // Aplikasi dimulai di halaman Cover
+            navigateTo('cover');
         });
 
         function loadUserData() {
@@ -727,20 +793,27 @@
             }
         }
 
-        // --- ONBOARDING & PROFIL SYSTEM ---
-        function checkOnboarding() {
+        // --- COVER & ONBOARDING SYSTEM ---
+        function handleCoverMulai() {
+            if (!userProfile) {
+                // Jika belum punya profil, tampilkan modal pendaftaran profil
+                openOnboardingModal();
+            } else {
+                // Jika profil sudah ada, langsung masuk ke beranda (dashboard)
+                navigateTo('beranda');
+                showToast(`Selamat datang kembali, ${userProfile.nama}!`);
+            }
+        }
+
+        function openOnboardingModal() {
             const modal = document.getElementById('profile-modal-backdrop');
             const closeBtn = document.getElementById('profile-close-btn');
             const cancelBtn = document.getElementById('btn-cancel-profile');
 
-            if (!userProfile) {
-                modal.style.display = 'flex';
-                closeBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-                document.getElementById('profile-modal-title').innerText = "Kenalan Dulu Yuk!";
-            } else {
-                modal.style.display = 'none';
-            }
+            modal.style.display = 'flex';
+            closeBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+            document.getElementById('profile-modal-title').innerText = "Kenalan Dulu Yuk!";
         }
 
         function openProfileEdit() {
