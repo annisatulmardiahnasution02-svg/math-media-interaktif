@@ -8,15 +8,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --sky-top: #38bdf8;
-            --sky-bottom: #bae6fd;
             --primary-dark: #14305E;
             --accent-yellow: #FFC72C;
             --accent-orange: #FF8A1F;
             --btn-green-start: #3DDC5B;
             --btn-green-end: #14A83A;
-            --card-bg: #FFFFFF;
-            --krem-pita: #FFF4DC;
             --accent-red: #FF5A5F;
             --text-main: #1B2A41;
             --font-title: 'Lilita One', cursive, sans-serif;
@@ -34,7 +30,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: #14284b;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -104,175 +100,57 @@
             box-shadow: 2px 2px 0px var(--primary-dark);
         }
 
-        /* --- STYLING RICH COVER SCREEN --- */
-        .cover-screen {
-            background: linear-gradient(180deg, #38bdf8 0%, #7dd3fc 45%, #fef08a 100%);
+        /* --- COVER SCREEN BERBASIS GAMBAR PAMFLET UTUH --- */
+        .cover-screen-image {
+            background-image: url('cover-bg.jpg'); /* Pastikan nama file gambar di repo sesuai */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
-            padding: 20px;
+            padding: 30px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .cover-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .cover-top-title-area {
-            text-align: center;
-            z-index: 10;
-            margin-top: 5px;
-        }
-        .cover-top-title-area h1 {
-            font-size: clamp(26px, 4.5vw, 42px);
-            line-height: 1.1;
-        }
-        .cover-top-title-area .sub-ribbon {
-            background: white;
-            border: 3px solid var(--primary-dark);
-            padding: 4px 18px;
-            border-radius: 16px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            font-size: 15px;
-            display: inline-block;
-            margin-top: 4px;
-        }
-
-        /* Container Visual Ilustrasi di Tengah Cover */
-        .cover-illustration-stage {
             flex: 1;
-            width: 100%;
-            max-width: 900px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            margin: 10px 0;
-            z-index: 5;
-            min-height: 320px;
         }
 
-        /* Elemen Melayang (Floating Badges & Coins) */
-        .float-element {
-            position: absolute;
-            z-index: 6;
-            animation: floatAnim 3s infinite ease-in-out;
-        }
-        @keyframes floatAnim {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(3deg); }
-        }
-
-        .badge-math-formula {
-            top: 20px; right: 10%;
-            background: #FFF4DC;
-            border: 3px solid var(--primary-dark);
-            padding: 8px 14px;
-            border-radius: 14px;
-            font-family: var(--font-title);
-            color: var(--primary-dark);
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            font-size: 15px;
-        }
-
-        .badge-map-route {
-            top: 15px; left: 8%;
-            background: white;
-            border: 3px solid var(--primary-dark);
-            padding: 8px 12px;
-            border-radius: 14px;
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            font-weight: 800;
-            font-size: 13px;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .coin-icon {
-            background: var(--accent-yellow);
-            border: 2px solid var(--primary-dark);
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 900;
-            color: var(--primary-dark);
-            box-shadow: 2px 2px 0px var(--primary-dark);
-            font-size: 18px;
-        }
-
-        /* Gelembung Percakapan di Atas Tombol Mulai */
-        .cover-speech-box {
-            position: absolute;
-            bottom: 85px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            border: 3px solid var(--primary-dark);
-            padding: 12px 20px;
-            border-radius: 20px;
-            max-width: 460px;
-            width: 90%;
-            text-align: center;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 4px 4px 0px var(--primary-dark);
-            z-index: 10;
-        }
-        .cover-speech-box::after {
+        /* Lapisan transparan tipis agar tombol di atas gambar terlihat sangat kontras dan mudah diklik */
+        .cover-screen-image::before {
             content: '';
             position: absolute;
-            bottom: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-width: 12px 10px 0;
-            border-style: solid;
-            border-color: var(--primary-dark) transparent;
-            display: block;
-            width: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            z-index: 1;
         }
 
-        /* Tombol Utama Mulai Belajar di Cover */
-        .btn-cover-start-game {
+        .cover-top-absolute-nav {
             position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .btn-cover-action {
+            position: relative;
+            z-index: 10;
             background: linear-gradient(to bottom, #3DDC5B, #14A83A);
             color: white;
             font-family: var(--font-title);
-            font-size: 28px;
+            font-size: 26px;
             padding: 16px 48px;
-            border-radius: 26px;
+            border-radius: 24px;
             border: 4px solid var(--primary-dark);
-            box-shadow: 0 6px 0px var(--primary-dark), 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 0px var(--primary-dark), 0 10px 25px rgba(0,0,0,0.4);
             cursor: pointer;
-            z-index: 10;
             animation: pulseBtn 2s infinite ease-in-out;
-            white-space: nowrap;
+            margin-bottom: 20px;
         }
         @keyframes pulseBtn {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.05); }
-        }
-
-        .cover-footer-text {
-            font-family: var(--font-title);
-            font-size: 13px;
-            color: var(--primary-dark);
-            z-index: 10;
-            margin-top: 5px;
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         /* Overlay & Toast */
@@ -343,7 +221,6 @@
             box-shadow: 2px 2px 0px var(--primary-dark);
         }
 
-        /* Modal Profil Title Fix */
         .modal-title {
             font-family: var(--font-title);
             color: var(--primary-dark);
@@ -353,7 +230,6 @@
             text-shadow: none;
         }
 
-        /* Form Grid */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -395,7 +271,6 @@
             min-height: 14px;
         }
 
-        /* Modal Buttons */
         .modal-btn-primary {
             background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
             color: white;
@@ -634,87 +509,16 @@
     <div id="toast-container"></div>
 
     <div id="app-container">
-        <!-- 0. COVER SCREEN (Rich Visual Illustration Game Cover) -->
-        <div id="room-cover" class="screen cover-screen active">
-            <div class="cover-header">
-                <div class="badge-logo">🛵 MATH-O-ANTAR</div>
-                <div class="top-btns">
-                    <button class="icon-btn" onclick="openProfileEdit()">👤 Profil</button>
-                    <button class="icon-btn" onclick="navigateTo('bantuan')">❓ Bantuan</button>
-                    <button class="icon-btn" onclick="openAboutModal()">ℹ️ Tentang</button>
-                </div>
+        <!-- 0. COVER SCREEN (Menggunakan Gambar Pamflet Asli) -->
+        <div id="room-cover" class="screen cover-screen-image active">
+            <div class="cover-top-absolute-nav">
+                <button class="icon-btn" onclick="openProfileEdit()">👤 Profil</button>
+                <button class="icon-btn" onclick="navigateTo('bantuan')">❓ Bantuan</button>
+                <button class="icon-btn" onclick="openAboutModal()">ℹ️ Tentang</button>
             </div>
 
-            <!-- Header Judul Cover -->
-            <div class="cover-top-title-area">
-                <h1>SERUNYA BELAJAR MATEMATIKA!</h1>
-                <div class="sub-ribbon">Petualangan Bareng Transportasi Online!</div>
-            </div>
-
-            <!-- Panggung Ilustrasi Visual Interaktif -->
-            <div class="cover-illustration-stage">
-                <!-- Badges / Elemen Grafis Melayang -->
-                <div class="float-element badge-map-route">
-                    <span>📍 Palembang (2,5 km)</span>
-                    <span style="color:#14A83A">Rp15.000</span>
-                </div>
-                <div class="float-element badge-math-formula">
-                    <span>T(j) = 5k + 2j</span>
-                </div>
-                <div class="float-element coin-icon" style="top: 25%; left: 18%;">%</div>
-                <div class="float-element coin-icon" style="top: 20%; right: 22%;">Rp</div>
-
-                <!-- Ilustrasi Karakter Ojek & Siswi dalam bentuk SVG Vektor Ringan -->
-                <svg viewBox="0 0 800 380" style="width: 100%; height: 100%; max-height: 340px;" preserveAspectRatio="xMidYMin meet">
-                    <!-- Lanskap Kota & Monumen Belakang -->
-                    <path d="M 50 320 L 750 320" stroke="#14305E" stroke-width="6" stroke-linecap="round"/>
-                    <rect x="120" y="160" width="60" height="160" fill="#93c5fd" stroke="#14305E" stroke-width="4"/>
-                    <rect x="620" y="180" width="70" height="140" fill="#93c5fd" stroke="#14305E" stroke-width="4"/>
-                    <!-- Monas / Ikon Kota -->
-                    <path d="M 180 320 L 190 140 L 195 90 L 200 140 L 210 320 Z" fill="#fef08a" stroke="#14305E" stroke-width="4"/>
-                    <circle cx="195" cy="80" r="10" fill="#FF8A1F" stroke="#14305E" stroke-width="3"/>
-                    
-                    <!-- Motor & Driver Ojek Online -->
-                    <g transform="translate(320, 100)">
-                        <!-- Badan Motor -->
-                        <path d="M 20 180 Q 90 200 160 180 Q 200 150 150 110 L 80 110 Z" fill="#22c55e" stroke="#14305E" stroke-width="5"/>
-                        <!-- Roda Motor -->
-                        <circle cx="50" cy="190" r="32" fill="#334155" stroke="#14305E" stroke-width="5"/>
-                        <circle cx="160" cy="190" r="32" fill="#334155" stroke="#14305E" stroke-width="5"/>
-                        <!-- Helm Driver Ojol Hijau -->
-                        <circle cx="120" cy="45" r="30" fill="#15803d" stroke="#14305E" stroke-width="5"/>
-                        <path d="M 125 35 L 148 40 L 140 58 Z" fill="#1e293b"/>
-                        <!-- Jaket Ojol -->
-                        <path d="M 95 75 Q 120 70 140 85 L 135 130 L 90 130 Z" fill="#16a34a" stroke="#14305E" stroke-width="5"/>
-                        <!-- Jaket Garis Hitam Ojol -->
-                        <path d="M 110 75 L 110 130" stroke="#1e293b" stroke-width="6"/>
-                    </g>
-
-                    <!-- Karakter Siswa SMA Berhijab (Penumpang) -->
-                    <g transform="translate(260, 110)">
-                        <!-- Hijab Putih -->
-                        <path d="M 40 40 Q 65 15 90 40 Q 95 80 85 100 L 35 100 Z" fill="#ffffff" stroke="#14305E" stroke-width="5"/>
-                        <!-- Wajah Senyum -->
-                        <circle cx="65" cy="55" r="18" fill="#fde047"/>
-                        <!-- Seragam SMA Abu-abu/Putih -->
-                        <path d="M 35 100 L 85 100 L 90 150 L 30 150 Z" fill="#e2e8f0" stroke="#14305E" stroke-width="5"/>
-                        <!-- Tas Sekolah Pink -->
-                        <rect x="15" y="95" width="22" height="40" rx="6" fill="#ec4899" stroke="#14305E" stroke-width="4"/>
-                    </g>
-                </svg>
-
-                <!-- Gelembung Percakapan -->
-                <div class="cover-speech-box">
-                    Pernahkah kamu penasaran bagaimana aplikasi menghitung tarif ojek online-mu? Yuk, kita bongkar rahasianya bersama!
-                </div>
-
-                <!-- Tombol Utama Mulai Belajar -->
-                <button class="btn-cover-start-game" onclick="handleCoverMulai()">[ MULAI BELAJAR ]</button>
-            </div>
-
-            <div class="cover-footer-text">
-                (Matematika Berbasis PMRI)
-            </div>
+            <!-- Tombol Mulai Belajar di atas Gambar Poster -->
+            <button class="btn-cover-action" onclick="handleCoverMulai()">[ MULAI BELAJAR ]</button>
         </div>
 
         <!-- ONBOARDING / PROFIL MODAL -->
