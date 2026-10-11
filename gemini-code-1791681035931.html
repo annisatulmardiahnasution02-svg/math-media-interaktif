@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math-O-Antar: LKM Digital Berbasis PMRI</title>
+    <!-- Google Fonts: Lilita One & Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sky-top: #4FC3F7;
+            --sky-bottom: #CFF3FF;
+            --primary-dark: #14305E;
+            --accent-yellow: #FFC72C;
+            --accent-orange: #FF8A1F;
+            --btn-green-start: #3DDC5B;
+            --btn-green-end: #14A83A;
+            --card-bg: #FFFFFF;
+            --krem-pita: #FFF4DC;
+            --accent-red: #FF5A5F;
+            --text-main: #1B2A41;
+            --font-title: 'Lilita One', cursive, sans-serif;
+            --font-body: 'Nunito', sans-serif;
+            --radius-box: 24px;
+            --shadow-solid: 4px 6px 0px #14305E;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-body);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-top), var(--sky-bottom));
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Bingkai Tablet Eksternal */
+        #app-container {
+            width: 100%;
+            max-width: 1200px;
+            min-height: 100vh;
+            background: #1B2A41;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            #app-container {
+                height: 94vh;
+                min-height: 700px;
+                border-radius: 36px;
+                border: 12px solid #2B3A55;
+            }
+        }
+
+        /* Main Viewport Screen */
+        .screen {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(180deg, #51D2FF 0%, #E3F8FF 60%, #FFFDF5 100%);
+            overflow-y: auto;
+            display: none;
+            padding: 20px;
+        }
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Typography & Utility */
+        h1, h2, h3, .game-title {
+            font-family: var(--font-title);
+            color: var(--accent-yellow);
+            text-shadow: 3px 3px 0px var(--primary-dark), -1px -1px 0px var(--primary-dark), 1px -1px 0px var(--primary-dark), -1px 1px 0px var(--primary-dark);
+        }
+
+        button {
+            cursor: pointer;
+            border: 3px solid var(--primary-dark);
+            border-radius: 16px;
+            font-weight: 800;
+            box-shadow: var(--shadow-solid);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 8px 0px var(--primary-dark);
+        }
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 2px 2px 0px var(--primary-dark);
+        }
+
+        /* Overlay & Toast */
+        #toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .toast {
+            background: var(--btn-green-start);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-weight: 700;
+            border: 3px solid var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: fadeInOut 2s ease forwards;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            15% { opacity: 1; transform: translateY(0); }
+            85% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .overlay-backdrop {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(20, 48, 94, 0.6);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .overlay-box {
+            background: white;
+            border: 4px solid var(--primary-dark);
+            border-radius: var(--radius-box);
+            width: 100%;
+            max-width: 480px;
+            padding: 24px;
+            box-shadow: 8px 8px 0px var(--primary-dark);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 44px;
+            height: 44px;
+            background: var(--accent-red);
+            color: white;
+            border: 3px solid var(--primary-dark);
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 2px 2px 0px var(--primary-dark);
+        }
+
+        /* Formulir Profil */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .form-row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        @media (max-width: 400px) {
+            .form-row-2 { grid-template-columns: 1fr; }
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-weight: 700;
+            color: var(--primary-dark);
+            text-align: left;
+        }
+        .input-group input {
+            height: 52px;
+            padding: 0 16px;
+            border-radius: 14px;
+            border: 3px solid var(--primary-dark);
+            font-size: 16px;
+            background: #FFFDF5;
+            box-sizing: border-box;
+        }
+        .error-msg {
+            color: var(--accent-red);
+            font-size: 13px;
+            font-weight: 700;
+            min-height: 18px;
+        }
+
+        /* Beranda UI Components */
+        .beranda-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            z-index: 5;
+        }
+        .badge-logo {
+            background: var(--krem-pita);
+            border: 3px solid var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-family: var(--font-title);
+            color: var(--primary-dark);
+            box-shadow: 2px 2px 0px var(--primary-dark);
+            font-size: 18px;
+        }
+        .top-btns {
+            display: flex;
+            gap: 10px;
+        }
+        .icon-btn {
+            background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
+            color: white;
+            border: 3px solid var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 2px 3px 0px var(--primary-dark);
+            cursor: pointer;
+        }
+
+        .beranda-center {
+            text-align: center;
+            margin: 10px 0;
+            z-index: 5;
+        }
+        .beranda-center h1 {
+            font-size: clamp(28px, 5vw, 48px);
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+        .title-ribbon {
+            background: white;
+            border: 3px solid var(--primary-dark);
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            box-shadow: 3px 3px 0px var(--primary-dark);
+            font-size: 16px;
+        }
+
+        .beranda-middle-sec {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+            z-index: 5;
+        }
+        .speech-bubble {
+            background: white;
+            border: 3px solid var(--primary-dark);
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 320px;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 4px 4px 0px var(--primary-dark);
+            position: relative;
+        }
+        .btn-mulai {
+            background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
+            color: white;
+            font-family: var(--font-title);
+            font-size: 26px;
+            padding: 14px 36px;
+            border-radius: 24px;
+            border: 4px solid var(--primary-dark);
+            box-shadow: 0 6px 0px var(--primary-dark), 0 10px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            animation: pulseBtn 2s infinite ease-in-out;
+        }
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 10px;
+            z-index: 5;
+        }
+        .mission-card {
+            background: white;
+            border: 3px solid var(--primary-dark);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 4px 4px 0px var(--primary-dark);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+        .mission-card:hover {
+            transform: translateY(-4px);
+        }
+        .mission-card.locked {
+            background: #E2E8F0;
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+        .mission-icon {
+            width: 50px; height: 50px;
+            background: var(--krem-pita);
+            border: 2px solid var(--primary-dark);
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+        }
+        .mission-info h4 {
+            font-family: var(--font-title);
+            color: var(--primary-dark);
+            font-size: 18px;
+        }
+        .mission-info p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .beranda-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            z-index: 5;
+        }
+        .dock-nav {
+            display: flex;
+            gap: 8px;
+        }
+        .dock-icon {
+            background: white;
+            border: 2px solid var(--primary-dark);
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--primary-dark);
+            font-size: 16px;
+        }
+
+        /* Generic Room Layout Styles */
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-home-btn {
+            background: var(--accent-orange);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 14px;
+            border: 3px solid var(--primary-dark);
+            font-weight: 700;
+            box-shadow: 3px 3px 0px var(--primary-dark);
+            cursor: pointer;
+        }
+        .room-card {
+            background: white;
+            border: 4px solid var(--primary-dark);
+            border-radius: var(--radius-box);
+            padding: 24px;
+            box-shadow: 6px 6px 0px var(--primary-dark);
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Placeholder Screen for Other Rooms */
+        .placeholder-content {
+            text-align: center;
+            padding: 40px;
+        }
+        .placeholder-content h2 {
+            font-size: 32px;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-container"></div>
+
+    <div id="app-container">
+        <!-- ONBOARDING / PROFIL MODAL (Muncul pertama kali jika belum ada profil) -->
+        <div id="profile-modal-backdrop" class="overlay-backdrop" style="display: none;">
+            <div class="overlay-box">
+                <div id="profile-close-btn" class="close-btn" style="display: none;">×</div>
+                <h2 style="color: var(--primary-dark); text-align: center;" id="profile-modal-title">Kenalan Dulu Yuk!</h2>
+                <p style="text-align: center; font-size: 14px; margin-top: 4px; color: #555;">Masukkan identitasmu untuk mulai berpetualang di Math-O-Antar.</p>
+                
+                <form id="profile-form" class="form-grid">
+                    <div class="input-group">
+                        <label for="input-nama">Nama Lengkap</label>
+                        <input type="text" id="input-nama" placeholder="Contoh: Budi Santoso">
+                        <div class="error-msg" id="err-nama"></div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="input-group">
+                            <label for="input-absen">Nomor Absen</label>
+                            <input type="number" id="input-absen" placeholder="Contoh: 12">
+                            <div class="error-msg" id="err-absen"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="input-kelas">Kelas (Opsional)</label>
+                            <input type="text" id="input-kelas" placeholder="Contoh: X.4">
+                            <div class="error-msg" id="err-kelas"></div>
+                        </div>
+                    </div>
+                    <button type="submit" id="btn-save-profile" class="btn-mulai" style="font-size: 18px; padding: 14px; margin-top: 8px;">Simpan dan Masuk</button>
+                    <button type="button" id="btn-cancel-profile" class="back-home-btn" style="display: none; width: 100%; margin-top: 6px;">Batal</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TENTANG APLIKASI MODAL -->
+        <div id="about-modal-backdrop" class="overlay-backdrop" style="display: none;">
+            <div class="overlay-box">
+                <div class="close-btn" onclick="closeAboutModal()">×</div>
+                <h2 style="color: var(--primary-dark); text-align: center; margin-bottom: 12px;">Tentang Instrumen</h2>
+                <p style="font-weight: 700; margin-bottom: 8px;">Math-O-Antar: LKM Digital Berbasis PMRI</p>
+                <p style="font-size: 15px; line-height: 1.5; margin-bottom: 12px;">Mata Pelajaran Matematika Kelas X SMA<br>Materi Pokok: Fungsi Kuadrat</p>
+                <div style="background: var(--krem-pita); padding: 12px; border-radius: 12px; border: 2px solid var(--primary-dark); font-size: 14px;">
+                    <p><strong>Peneliti:</strong> [ISI NAMA PENELITI]</p>
+                    <p style="margin-top: 4px;"><strong>Instansi:</strong> [ISI INSTANSI]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. BERANDA SCREEN -->
+        <div id="room-beranda" class="screen active">
+            <div class="beranda-header">
+                <div class="badge-logo">🛵 MATH-O-ANTAR</div>
+                <div class="top-btns">
+                    <button class="icon-btn" onclick="openProfileEdit()">👤 Profil</button>
+                    <button class="icon-btn" onclick="navigateTo('bantuan')">❓ Bantuan</button>
+                    <button class="icon-btn" onclick="openAboutModal()">ℹ️ Tentang</button>
+                </div>
+            </div>
+
+            <div class="beranda-center">
+                <h1>SERUNYA BELAJAR MATEMATIKA!</h1>
+                <div class="title-ribbon">Petualangan Bareng Layanan Antar Online!</div>
+            </div>
+
+            <div class="beranda-middle-sec">
+                <div class="speech-bubble">
+                    Pernahkah kamu penasaran bagaimana toko menentukan diskon ongkir? Yuk, kita bongkar rahasianya bersama!
+                </div>
+                <button class="btn-mulai" onclick="handleMulaiBelajar()">MULAI BELAJAR</button>
+            </div>
+
+            <div class="missions-grid">
+                <div class="mission-card" onclick="navigateTo('lkpd1')">
+                    <div class="mission-icon">🧮📦</div>
+                    <div class="mission-info">
+                        <h4>Misi 1</h4>
+                        <p>Bangun Fungsi Untung</p>
+                    </div>
+                </div>
+                <div class="mission-card locked" id="card-misi2" onclick="navigateTo('lkpd2')">
+                    <div class="mission-icon">🗺️⛰️</div>
+                    <div class="mission-info">
+                        <h4>Misi 2 <span id="lock-icon-2">🔒</span></h4>
+                        <p>Cari Puncak Untung</p>
+                    </div>
+                </div>
+                <div class="mission-card locked" id="card-misi3" onclick="navigateTo('lkpd3')">
+                    <div class="mission-icon">👛🎟️</div>
+                    <div class="mission-info">
+                        <h4>Misi 3 <span id="lock-icon-3">🔒</span></h4>
+                        <p>Promo & Target Untung</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="beranda-footer">
+                <span>(Matematika Berbasis PMRI)</span>
+                <div class="dock-nav">
+                    <div class="dock-icon" title="Petunjuk" onclick="navigateTo('petunjuk')">📖</div>
+                    <div class="dock-icon" title="Cerita" onclick="navigateTo('cerita')">📜</div>
+                    <div class="dock-icon" title="Simulasi" onclick="navigateTo('simulasi')">📊</div>
+                    <div class="dock-icon" title="Bantuan" onclick="navigateTo('bantuan')">💡</div>
+                    <div class="dock-icon" title="Pencapaian" onclick="navigateTo('pencapaian')">🏆</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. RUANG PETUNJUK -->
+        <div id="room-petunjuk" class="screen">
+            <div class="room-header">
+                <h2>Ruang Petunjuk</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Selamat datang di Math-O-Antar!</h2>
+                    <p>LKM Digital Berbasis PMRI | Materi Fungsi Kuadrat | Matematika Kelas X SMA</p>
+                    <p style="margin-top: 20px; color: #666;">(Isi lengkap tahapan, panduan, dan tujuan pembelajaran akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. RUANG CERITA -->
+        <div id="room-cerita" class="screen">
+            <div class="room-header">
+                <h2>Ruang Cerita</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Kisah Toko Pempek Pak Raden</h2>
+                    <p style="margin-top: 20px; color: #666;">(Komik cerita dan konteks permasalahan Toko Pempek Pak Raden akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. RUANG SIMULASI -->
+        <div id="room-simulasi" class="screen">
+            <div class="room-header">
+                <h2>Ruang Simulasi & Grafik</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Simulasi Diskon Ongkir & Kanvas Grafik</h2>
+                    <p style="margin-top: 20px; color: #666;">(Komponen simulasi diagram batang dan kanvas grafik interaktif akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. RUANG LKPD 1 (MISI 1) -->
+        <div id="room-lkpd1" class="screen">
+            <div class="room-header">
+                <h2>Misi 1: Bangun Fungsi Untung</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Aktivitas 1: Diskon Ongkir & Keuntungan</h2>
+                    <p style="margin-top: 20px; color: #666;">(Aktivitas tahapan Situational, Referential, General, dan Formal akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. RUANG LKPD 2 (MISI 2) -->
+        <div id="room-lkpd2" class="screen">
+            <div class="room-header">
+                <h2>Misi 2: Cari Puncak Untung</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Aktivitas 2: Titik Puncak & Titik Potong</h2>
+                    <p style="margin-top: 20px; color: #666;">(Aktivitas penurunan rumus melengkapkan kuadrat sempurna akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. RUANG LKPD 3 (MISI 3) -->
+        <div id="room-lkpd3" class="screen">
+            <div class="room-header">
+                <h2>Misi 3: Promo & Target Untung</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Aktivitas 3: Program Partner Pilihan</h2>
+                    <p style="margin-top: 20px; color: #666;">(Aktivitas analisis syarat platform dan target untung minimal akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. RUANG BANTUAN -->
+        <div id="room-bantuan" class="screen">
+            <div class="room-header">
+                <h2>Ruang Bantuan</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Panduan & Kamus Istilah</h2>
+                    <p style="margin-top: 20px; color: #666;">(Panduan alat grafik, kamus istilah flip card, dan petunjuk bertahap akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. RUANG PENCAPAIAN -->
+        <div id="room-pencapaian" class="screen">
+            <div class="room-header">
+                <h2>Ruang Pencapaian</h2>
+                <button class="back-home-btn" onclick="navigateTo('beranda')">← Beranda</button>
+            </div>
+            <div class="room-card">
+                <div class="placeholder-content">
+                    <h2>Progres & Lencana Belajar</h2>
+                    <p style="margin-top: 20px; color: #666;">(Ringkasan progres LKPD, lencana penghargaan, serta fitur kirim/unduh jawaban akan dimuat pada modul berikutnya).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- STATE MANAGEMENT & LOCAL STORAGE ---
+        const SUBMIT_URL = ""; // Kosong secara bawaan
+        let userProfile = null;
+        let appProgress = {
+            lkpd1Selesai: false,
+            lkpd2Selesai: false,
+            lkpd3Selesai: false
+        };
+
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
+            checkOnboarding();
+            updateMissionLocks();
+        });
+
+        function loadUserData() {
+            try {
+                const savedProfile = localStorage.getItem('math_o_antar_profile');
+                if (savedProfile) {
+                    userProfile = JSON.parse(savedProfile);
+                }
+                const savedProgress = localStorage.getItem('math_o_antar_progress');
+                if (savedProgress) {
+                    appProgress = JSON.parse(savedProgress);
+                }
+            } catch (e) {
+                console.error("Gagal membaca localStorage", e);
+            }
+        }
+
+        function saveUserDataToStorage() {
+            try {
+                localStorage.setItem('math_o_antar_profile', JSON.stringify(userProfile));
+                localStorage.setItem('math_o_antar_progress', JSON.stringify(appProgress));
+            } catch (e) {
+                console.error("Gagal menyimpan ke localStorage", e);
+            }
+        }
+
+        // --- ONBOARDING & PROFIL SYSTEM ---
+        function checkOnboarding() {
+            const modal = document.getElementById('profile-modal-backdrop');
+            const closeBtn = document.getElementById('profile-close-btn');
+            const cancelBtn = document.getElementById('btn-cancel-profile');
+
+            if (!userProfile) {
+                // Mode Onboarding Pertama Kali
+                modal.style.display = 'flex';
+                closeBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+                document.getElementById('profile-modal-title').innerText = "Kenalan Dulu Yuk!";
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        function openProfileEdit() {
+            if (!userProfile) return;
+            const modal = document.getElementById('profile-modal-backdrop');
+            const closeBtn = document.getElementById('profile-close-btn');
+            const cancelBtn = document.getElementById('btn-cancel-profile');
+
+            document.getElementById('input-nama').value = userProfile.nama || '';
+            document.getElementById('input-absen').value = userProfile.absen || '';
+            document.getElementById('input-kelas').value = userProfile.kelas || '';
+
+            modal.style.display = 'flex';
+            closeBtn.style.display = 'flex';
+            cancelBtn.style.display = 'block';
+            document.getElementById('profile-modal-title').innerText = "Ubah Profil Siswa";
+        }
+
+        document.getElementById('btn-cancel-profile').addEventListener('click', () => {
+            document.getElementById('profile-modal-backdrop').style.display = 'none';
+        });
+
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const namaInput = document.getElementById('input-nama');
+            const absenInput = document.getElementById('input-absen');
+            const kelasInput = document.getElementById('input-kelas');
+
+            const errNama = document.getElementById('err-nama');
+            const errAbsen = document.getElementById('err-absen');
+
+            errNama.innerText = "";
+            errAbsen.innerText = "";
+
+            const namaVal = namaInput.value.trim();
+            const absenVal = absenInput.value.trim();
+            const kelasVal = kelasInput.value.trim();
+
+            let isValid = true;
+            if (!namaVal) {
+                errNama.innerText = "Nama lengkap wajib diisi!";
+                isValid = false;
+            }
+            if (!absenVal) {
+                errAbsen.innerText = "Nomor absen wajib diisi!";
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Simpan profil
+            const isNew = !userProfile;
+            userProfile = { nama: namaVal, absen: absenVal, kelas: kelasVal };
+            saveUserDataToStorage();
+
+            // Tutup modal
+            document.getElementById('profile-modal-backdrop').style.display = 'none';
+
+            if (isNew) {
+                navigateTo('beranda');
+                showToast(`Selamat datang, ${namaVal}! Ayo mulai belajar.`);
+            } else {
+                showToast("Profil diperbarui!");
+            }
+        });
+
+        // --- TOAST NOTIFICATION ---
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerText = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+
+        // --- TENTANG MODAL ---
+        function openAboutModal() {
+            document.getElementById('about-modal-backdrop').style.display = 'flex';
+        }
+        function closeAboutModal() {
+            document.getElementById('about-modal-backdrop').style.display = 'none';
+        }
+
+        // --- NAVIGASI ANTAR RUANG ---
+        function navigateTo(roomName) {
+            // Validasi kunci ruang LKPD
+            if (roomName === 'lkpd2' && !appProgress.lkpd1Selesai) {
+                showToast("Selesaikan misi sebelumnya dulu ya 🔒");
+                return;
+            }
+            if (roomName === 'lkpd3' && !appProgress.lkpd2Selesai) {
+                showToast("Selesaikan misi sebelumnya dulu ya 🔒");
+                return;
+            }
+
+            // Sembunyikan semua screen
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(scr => scr.classList.remove('active'));
+
+            // Tampilkan ruang tujuan
+            const targetScreen = document.getElementById(`room-${roomName}`);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                targetScreen.scrollTop = 0;
+            }
+        }
+
+        function handleMulaiBelajar() {
+            if (appProgress.lkpd3Selesai) {
+                navigateTo('pencapaian');
+            } else if (appProgress.lkpd2Selesai) {
+                navigateTo('lkpd3');
+            } else if (appProgress.lkpd1Selesai) {
+                navigateTo('lkpd2');
+            } else {
+                navigateTo('petunjuk');
+            }
+        }
+
+        function updateMissionLocks() {
+            const card2 = document.getElementById('card-misi2');
+            const lock2 = document.getElementById('lock-icon-2');
+            const card3 = document.getElementById('card-misi3');
+            const lock3 = document.getElementById('lock-icon-3');
+
+            if (appProgress.lkpd1Selesai) {
+                card2.classList.remove('locked');
+                if (lock2) lock2.style.display = 'none';
+            }
+            if (appProgress.lkpd2Selesai) {
+                card3.classList.remove('locked');
+                if (lock3) lock3.style.display = 'none';
+            }
+        }
+
+        // Tutup modal dengan tombol Esc atau klik luar
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAboutModal();
+                if (userProfile) {
+                    document.getElementById('profile-modal-backdrop').style.display = 'none';
+                }
+            }
+        });
+
+        document.querySelectorAll('.overlay-backdrop').forEach(backdrop => {
+            backdrop.addEventListener('click', (e) => {
+                if (e.target === backdrop && userProfile && backdrop.id !== 'profile-modal-backdrop') {
+                    backdrop.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
