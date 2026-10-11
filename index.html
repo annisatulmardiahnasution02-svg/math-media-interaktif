@@ -104,61 +104,180 @@
             box-shadow: 2px 2px 0px var(--primary-dark);
         }
 
-        /* Cover Screen Style */
-        .cover-content {
-            flex: 1;
+        /* ===== COVER CSS: START (Math-Delivery v6) ===== */
+        #room-cover.screen {
+            padding: 0;
+            overflow: hidden;
+            background: #3FB6F5;
+            display: none;
+        }
+        #room-cover.screen.active {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
+        }
+        .cv-stage {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            overflow: hidden;
+        }
+        .cv-scene {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .cv-ui {
+            position: absolute;
+            inset: 0;
             z-index: 5;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 18px 18px;
+            text-align: center;
+            overflow-y: auto;
+            font-family: 'Lilita One', cursive;
         }
-        .cover-logo-badge {
-            background: var(--krem-pita);
-            border: 3px solid var(--primary-dark);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-family: var(--font-title);
-            color: var(--primary-dark);
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            font-size: 22px;
-            margin-bottom: 20px;
+        .cv-top {
+            filter: drop-shadow(0 5px 0 #14305E);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .cover-title {
-            font-size: clamp(36px, 7vw, 64px);
-            line-height: 1.1;
-            margin-bottom: 12px;
+        .cv-top-btns {
+            display: flex;
+            gap: 8px;
         }
-        .cover-subtitle {
-            background: white;
-            border: 3px solid var(--primary-dark);
+        .cv-top span, .cv-foot span {
             display: inline-block;
-            padding: 8px 24px;
-            border-radius: 20px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            box-shadow: 4px 4px 0px var(--primary-dark);
-            font-size: 18px;
-            margin-bottom: 30px;
+            -webkit-text-stroke: var(--w, 8px) #14305E;
+            paint-order: stroke fill;
+            animation: cvLetter 2.2s ease-in-out infinite;
         }
-        .btn-mulai-cover {
-            background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
-            color: white;
-            font-family: var(--font-title);
-            font-size: 28px;
-            padding: 16px 44px;
-            border-radius: 28px;
-            border: 4px solid var(--primary-dark);
-            box-shadow: 0 6px 0px var(--primary-dark), 0 10px 20px rgba(0,0,0,0.2);
+        .cv-kicker {
+            font-size: clamp(14px, 2vw, 20px);
+            color: #fff;
+            letter-spacing: 2px;
+            --w: 6px;
+        }
+        .cv-title {
+            font-weight: 400;
+            font-size: clamp(38px, 8vw, 88px);
+            line-height: 1;
+            letter-spacing: 3px;
+            color: #FFC72C;
+            margin: 2px 0;
+            --w: 12px;
+        }
+        .cv-sub {
+            font-size: clamp(26px, 4.8vw, 52px);
+            letter-spacing: 3px;
+            color: #fff;
+            --w: 9px;
+        }
+        .cv-sub span:nth-child(3n+2) { color: #FFE680; }
+        .cv-sub2 {
+            font-size: clamp(15px, 2.6vw, 27px);
+            letter-spacing: 2px;
+            color: #FFF4DC;
+            --w: 7px;
+            margin-top: 2px;
+        }
+        .cv-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .cv-btn {
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
-            animation: pulseBtn 2s infinite ease-in-out;
+            background: linear-gradient(#52E86E, #14A83A);
+            color: #fff;
+            font-family: 'Lilita One', cursive;
+            font-size: clamp(22px, 3.6vw, 32px);
+            padding: 12px 46px;
+            border: 4px solid #14305E;
+            border-radius: 28px;
+            box-shadow: 0 6px 0 #14305E, 0 14px 24px rgba(0,0,0,.3);
+            text-shadow: 0 2px 0 rgba(20,48,94,.55);
+            animation: cvPulse 1.8s ease-in-out infinite;
         }
-        @keyframes pulseBtn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .cv-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -60%;
+            width: 35%;
+            height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.65), transparent);
+            transform: skewX(-20deg);
+            animation: cvShine 3s infinite;
         }
+        .cv-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #14305E;
+        }
+        .cv-foot {
+            font-size: clamp(15px, 2.2vw, 22px);
+            color: #fff;
+            letter-spacing: 1px;
+            -webkit-text-stroke: 6px #14305E;
+            paint-order: stroke fill;
+            filter: drop-shadow(0 3px 0 #14305E);
+        }
+
+        .a-cloud { animation: aDrift var(--s, 70s) linear var(--d, 0s) infinite both; }
+        .a-ride { animation: aRide 12s linear .2s infinite both; }
+        .a-boat { animation: aBoat 42s linear infinite both; }
+        .a-bob { animation: aBob .45s ease-in-out infinite alternate; }
+        .a-spin { transform-box: fill-box; transform-origin: center; animation: aSpin .5s linear infinite; }
+        .a-waves { animation: aWaves 4s linear infinite; }
+        .a-waves2 { animation: aWaves 7s linear infinite reverse; }
+        .a-dash { animation: aDash .6s linear infinite; }
+        .a-sway { animation: aSway 4s ease-in-out infinite alternate; }
+        .a-float { animation: aFloat 5s ease-in-out infinite alternate; }
+        .a-rays { transform-box: fill-box; transform-origin: center; animation: aSpin 40s linear infinite; }
+        .a-spark { transform-box: fill-box; transform-origin: center; animation: aSpark 2.4s ease-in-out infinite; }
+        .a-draw { stroke-dasharray: 100; animation: aDraw 4.5s ease-in-out infinite; }
+        .a-hero { animation: aHero 2.2s ease-in-out infinite alternate; }
+        .a-head { animation: aHead 2.6s ease-in-out infinite alternate; }
+        .a-tab { animation: aTab 2.8s ease-in-out infinite alternate; }
+        .a-pin { animation: aPin .9s ease-in-out infinite alternate; }
+        .a-shine { animation: aShine 3s ease-in-out infinite; }
+        @keyframes cvLetter { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-8px) rotate(-2deg); } }
+        @keyframes cvPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+        @keyframes cvShine { 0%, 55% { left: -60%; } 100% { left: 140%; } }
+        @keyframes aDrift { from { transform: translateX(-340px); } to { transform: translateX(1560px); } }
+        @keyframes aRide { from { transform: translateX(-270px); } to { transform: translateX(1450px); } }
+        @keyframes aBoat { from { transform: translateX(1300px); } to { transform: translateX(-140px); } }
+        @keyframes aBob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+        @keyframes aSpin { to { transform: rotate(360deg); } }
+        @keyframes aWaves { from { transform: translateX(0); } to { transform: translateX(60px); } }
+        @keyframes aDash { to { stroke-dashoffset: 60; } }
+        @keyframes aSway { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
+        @keyframes aFloat { from { transform: translateY(0) rotate(-6deg); } to { transform: translateY(-24px) rotate(6deg); } }
+        @keyframes aSpark { 0%, 100% { transform: scale(.5); opacity: .4; } 50% { transform: scale(1.2); opacity: 1; } }
+        @keyframes aDraw { 0% { stroke-dashoffset: 100; } 55%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -100; } }
+        @keyframes aHero { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+        @keyframes aHead { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
+        @keyframes aTab { from { transform: translateY(0) rotate(0); } to { transform: translateY(-8px) rotate(2deg); } }
+        @keyframes aPin { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+        @keyframes aShine { 0%, 100% { opacity: .25; } 50% { opacity: .7; } }
+        .a-hero2 { transform-origin: 600px 705px; animation: aHero2 2.4s ease-in-out infinite alternate; filter: drop-shadow(0 8px 0 rgba(20,48,94,.22)); }
+        .a-streak { animation: aStreak .9s linear infinite; }
+        @keyframes aHero2 { from { transform: translateY(0) rotate(-.6deg); } to { transform: translateY(-10px) rotate(.6deg) scale(1.01); } }
+        @keyframes aStreak { from { transform: translateX(0); opacity: .9; } to { transform: translateX(40px); opacity: 0; } }
+        .a-carR { animation: aCarR var(--t, 15s) linear var(--d, 0s) infinite both; }
+        .a-carL { animation: aCarL var(--t, 15s) linear var(--d, 0s) infinite both; }
+        @keyframes aCarR { from { transform: translateX(-140px); } to { transform: translateX(1900px); } }
+        @keyframes aCarL { from { transform: translateX(1900px); } to { transform: translateX(-140px); } }
+        @media(prefers-reduced-motion:reduce) { .cv-stage * { animation: none !important; } }
+        /* ===== COVER CSS: END ===== */
 
         /* Overlay & Toast */
         #toast-container {
@@ -228,7 +347,6 @@
             box-shadow: 2px 2px 0px var(--primary-dark);
         }
 
-        /* Khusus Judul Modal agar tidak tercut */
         .modal-title {
             font-family: var(--font-title);
             color: var(--primary-dark);
@@ -238,7 +356,6 @@
             text-shadow: none;
         }
 
-        /* Formulir Profil */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -280,7 +397,6 @@
             min-height: 14px;
         }
 
-        /* Tombol Seragam untuk Modal */
         .modal-btn-primary {
             background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
             color: white;
@@ -503,7 +619,6 @@
             overflow-y: auto;
         }
 
-        /* Placeholder Screen for Other Rooms */
         .placeholder-content {
             text-align: center;
             padding: 40px;
@@ -520,18 +635,61 @@
     <div id="toast-container"></div>
 
     <div id="app-container">
-        <!-- 0. COVER SCREEN (Halaman Pembuka) -->
+        <!-- ===== COVER HTML: START (Math-Delivery v6) ===== -->
         <div id="room-cover" class="screen active">
-            <div class="cover-content">
-                <div class="cover-logo-badge">🛵 MATH-O-ANTAR</div>
-                <h1 class="cover-title">LKM DIGITAL BERBASIS PMRI</h1>
-                <div class="cover-subtitle">Materi Fungsi Kuadrat • Matematika Kelas X SMA</div>
-                <p style="font-weight: 700; color: var(--primary-dark); margin-bottom: 24px; font-size: 16px; max-width: 480px;">
-                    Jelajahi keseruan matematika melalui konteks layanan pesan-antar makanan online bersama Toko Pempek Pak Raden!
-                </p>
-                <button class="btn-mulai-cover" onclick="handleCoverMulai()">MULAI PETUALANGAN</button>
+            <div class="cv-stage">
+                <svg class="cv-scene" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="cvSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3FB6F5"/><stop offset=".6" stop-color="#BFEBFF"/><stop offset="1" stop-color="#FFF6DD"/></linearGradient>
+                        <linearGradient id="cvRiver" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5CC8F2"/><stop offset="1" stop-color="#2A86C9"/></linearGradient>
+                        <linearGradient id="cvWalk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFEFC4"/><stop offset="1" stop-color="#FFD58A"/></linearGradient>
+                        <linearGradient id="cvGreen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6CF07E"/><stop offset=".55" stop-color="#2FCB4D"/><stop offset="1" stop-color="#128F32"/></linearGradient>
+                        <linearGradient id="cvSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD9B3"/><stop offset="1" stop-color="#F0A673"/></linearGradient>
+                        <linearGradient id="cvHijab" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#D5E6F5"/></linearGradient>
+                        <radialGradient id="cvGlow"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".6" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+                        <linearGradient id="cvVeil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset=".45" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+                        <linearGradient id="cvBandF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".14" stop-color="#fff"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+                        <mask id="cvBandM" maskUnits="userSpaceOnUse" x="0" y="170" width="1200" height="392"><rect x="0" y="170" width="1200" height="392" fill="url(#cvBandF)"/></mask>
+                        <g id="cvCar"><path d="M0-9Q0-15 7-16L17-17L25-26H45L53-17L63-15Q69-14 69-8V-4H0Z" fill="currentColor" stroke="#1B2A41" stroke-width="1.6" stroke-linejoin="round"/><path d="M22-17L28-24H37V-17ZM40-17V-24H45L51-17Z" fill="#BDE9FF" stroke="#1B2A41" stroke-width="1"/><circle cx="16" cy="-6" r="6.5" fill="#263238" stroke="#1B2A41" stroke-width="1.5"/><circle cx="16" cy="-6" r="2.6" fill="#CFD8DC"/><circle cx="53" cy="-6" r="6.5" fill="#263238" stroke="#1B2A41" stroke-width="1.5"/><circle cx="53" cy="-6" r="2.6" fill="#CFD8DC"/></g>
+                        <g id="cvBus"><rect y="-35" width="80" height="30" rx="5" fill="#EAF2FA" stroke="#1B2A41" stroke-width="1.6"/><rect y="-16" width="80" height="5" fill="#2F7DD1"/><g fill="#BDE9FF" stroke="#1B2A41" stroke-width=".8"><rect x="6" y="-31" width="11" height="9"/><rect x="21" y="-31" width="11" height="9"/><rect x="36" y="-31" width="11" height="9"/><rect x="51" y="-31" width="11" height="9"/><rect x="66" y="-31" width="9" height="9"/></g><circle cx="17" cy="-6" r="6.5" fill="#263238" stroke="#1B2A41" stroke-width="1.5"/><circle cx="63" cy="-6" r="6.5" fill="#263238" stroke="#1B2A41" stroke-width="1.5"/></g>
+                        <radialGradient id="cvSun"><stop offset="0" stop-color="#FFF8C4"/><stop offset="1" stop-color="#FFC72C"/></radialGradient>
+                        <pattern id="cvWave" width="60" height="14" patternUnits="userSpaceOnUse"><path d="M0 8q15-9 30 0t30 0" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7"/></pattern>
+                        <g id="cvCloud" fill="#fff"><ellipse rx="48" ry="16"/><circle cx="-16" cy="-12" r="19"/><circle cx="14" cy="-18" r="23"/></g>
+                    </defs>
+
+                    <!-- Latar Belakang SVG Scene -->
+                    <rect width="1200" height="700" fill="url(#cvSky)"/>
+                    <circle cx="1020" cy="140" r="75" fill="url(#cvSun)"/>
+                    <g class="a-cloud" style="--s:90s;--d:0s"><use href="#cvCloud" x="200" y="120" transform="scale(1.2)"/></g>
+                    <g class="a-cloud" style="--s:75s;--d:-20s"><use href="#cvCloud" x="700" y="90" transform="scale(.9)"/></g>
+                    <g class="a-cloud" style="--s:110s;--d:-45s"><use href="#cvCloud" x="1050" y="160" transform="scale(1.4)"/></g>
+                </svg>
+
+                <div class="cv-ui">
+                    <div class="cv-top">
+                        <div class="badge-logo" style="filter: drop-shadow(0 3px 0 #14305E);">🛵 MATH-O-ANTAR</div>
+                        <div class="cv-top-btns">
+                            <button class="icon-btn" onclick="openProfileEdit()">👤 Profil</button>
+                            <button class="icon-btn" onclick="navigateTo('bantuan')">❓ Bantuan</button>
+                            <button class="icon-btn" onclick="openAboutModal()">ℹ️ Tentang</button>
+                        </div>
+                    </div>
+
+                    <div style="margin: auto 0;">
+                        <div class="cv-kicker"><span>LKM DIGITAL BERBASIS PMRI</span></div>
+                        <h1 class="cv-title"><span>SERUNYA BELAJAR MATEMATIKA!</span></h1>
+                        <div class="cv-sub"><span>PETUALANGAN</span> <span>BARENG</span> <span>TRANSPORTASI</span> <span>ONLINE!</span></div>
+                        <div class="cv-sub2"><span>Materi Fungsi Kuadrat • Matematika Kelas X SMA</span></div>
+                    </div>
+
+                    <div class="cv-bottom">
+                        <button class="cv-btn" onclick="handleCoverMulai()">[ MULAI BELAJAR ]</button>
+                        <div class="cv-foot"><span>(Matematika Berbasis PMRI)</span></div>
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- ===== COVER HTML: END ===== -->
 
         <!-- ONBOARDING / PROFIL MODAL -->
         <div id="profile-modal-backdrop" class="overlay-backdrop" style="display: none;">
@@ -765,7 +923,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadUserData();
             updateMissionLocks();
-            // Aplikasi dimulai di halaman Cover
             navigateTo('cover');
         });
 
@@ -796,10 +953,8 @@
         // --- COVER & ONBOARDING SYSTEM ---
         function handleCoverMulai() {
             if (!userProfile) {
-                // Jika belum punya profil, tampilkan modal pendaftaran profil
                 openOnboardingModal();
             } else {
-                // Jika profil sudah ada, langsung masuk ke beranda (dashboard)
                 navigateTo('beranda');
                 showToast(`Selamat datang kembali, ${userProfile.nama}!`);
             }
