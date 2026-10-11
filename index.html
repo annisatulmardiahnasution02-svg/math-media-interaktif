@@ -34,7 +34,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--sky-top), var(--sky-bottom));
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -44,25 +44,25 @@
             position: relative;
         }
 
-        /* Bingkai Tablet Eksternal */
+        /* Bingkai Tablet Eksternal ala Ilustrasi */
         #app-container {
             width: 100%;
             max-width: 1200px;
             min-height: 100vh;
-            background: #1B2A41;
+            background: #14284b;
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
         @media (min-width: 768px) {
             #app-container {
                 height: 94vh;
-                min-height: 700px;
+                min-height: 720px;
                 border-radius: 36px;
-                border: 12px solid #2B3A55;
+                border: 14px solid #1f365c;
             }
         }
 
@@ -70,7 +70,7 @@
         .screen {
             flex: 1;
             position: relative;
-            background: linear-gradient(180deg, #51D2FF 0%, #E3F8FF 60%, #FFFDF5 100%);
+            background: linear-gradient(180deg, #4FC3F7 0%, #B3E5FC 50%, #E0F7FA 100%);
             overflow-y: auto;
             display: none;
             padding: 20px;
@@ -104,60 +104,99 @@
             box-shadow: 2px 2px 0px var(--primary-dark);
         }
 
-        /* Cover Screen Style */
-        .cover-content {
-            flex: 1;
+        /* --- STYLING KHUSUS COVER (MENYESUAIKAN REFERENSI) --- */
+        .cover-screen {
+            background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 60%, #fef08a 100%);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            text-align: center;
             padding: 20px;
+            position: relative;
+        }
+        .cover-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             z-index: 5;
         }
-        .cover-logo-badge {
-            background: var(--krem-pita);
-            border: 3px solid var(--primary-dark);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-family: var(--font-title);
-            color: var(--primary-dark);
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            font-size: 22px;
-            margin-bottom: 20px;
+        .cover-main-box {
+            background: rgba(255, 255, 255, 0.85);
+            border: 4px solid var(--primary-dark);
+            border-radius: 28px;
+            padding: 24px;
+            width: 100%;
+            max-width: 850px;
+            text-align: center;
+            box-shadow: 6px 8px 0px var(--primary-dark);
+            z-index: 5;
+            margin: auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
         }
-        .cover-title {
-            font-size: clamp(36px, 7vw, 64px);
+        .cover-banner-title {
+            font-size: clamp(28px, 4.5vw, 44px);
             line-height: 1.1;
-            margin-bottom: 12px;
+            margin: 0;
         }
-        .cover-subtitle {
+        .cover-banner-subtitle {
             background: white;
             border: 3px solid var(--primary-dark);
-            display: inline-block;
-            padding: 8px 24px;
-            border-radius: 20px;
+            padding: 6px 18px;
+            border-radius: 16px;
             font-weight: 800;
             color: var(--primary-dark);
-            box-shadow: 4px 4px 0px var(--primary-dark);
-            font-size: 18px;
-            margin-bottom: 30px;
+            box-shadow: 3px 3px 0px var(--primary-dark);
+            font-size: 16px;
         }
-        .btn-mulai-cover {
+        .cover-speech-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .cover-bubble {
+            background: white;
+            border: 3px solid var(--primary-dark);
+            padding: 12px 18px;
+            border-radius: 18px;
+            font-weight: 700;
+            font-size: 14px;
+            text-align: left;
+            flex: 1;
+            min-width: 260px;
+            box-shadow: 3px 3px 0px var(--primary-dark);
+            color: var(--text-main);
+        }
+        .btn-cover-mulai {
             background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
             color: white;
             font-family: var(--font-title);
-            font-size: 28px;
-            padding: 16px 44px;
-            border-radius: 28px;
+            font-size: 24px;
+            padding: 14px 36px;
+            border-radius: 22px;
             border: 4px solid var(--primary-dark);
-            box-shadow: 0 6px 0px var(--primary-dark), 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 0px var(--primary-dark), 0 8px 16px rgba(0,0,0,0.2);
             cursor: pointer;
             animation: pulseBtn 2s infinite ease-in-out;
+            white-space: nowrap;
         }
         @keyframes pulseBtn {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.04); }
+        }
+        .cover-footer-note {
+            font-family: var(--font-title);
+            font-size: 14px;
+            color: var(--primary-dark);
+            text-align: center;
+            z-index: 5;
+            letter-spacing: 0.5px;
         }
 
         /* Overlay & Toast */
@@ -308,7 +347,7 @@
             margin-top: 8px;
         }
 
-        /* Beranda UI Components */
+        /* Beranda UI Components (Dashboard) */
         .beranda-header {
             display: flex;
             justify-content: space-between;
@@ -520,16 +559,31 @@
     <div id="toast-container"></div>
 
     <div id="app-container">
-        <!-- 0. COVER SCREEN (Halaman Pembuka) -->
-        <div id="room-cover" class="screen active">
-            <div class="cover-content">
-                <div class="cover-logo-badge">🛵 MATH-O-ANTAR</div>
-                <h1 class="cover-title">LKM DIGITAL BERBASIS PMRI</h1>
-                <div class="cover-subtitle">Materi Fungsi Kuadrat • Matematika Kelas X SMA</div>
-                <p style="font-weight: 700; color: var(--primary-dark); margin-bottom: 24px; font-size: 16px; max-width: 480px;">
-                    Jelajahi keseruan matematika melalui konteks layanan pesan-antar makanan online bersama Toko Pempek Pak Raden!
-                </p>
-                <button class="btn-mulai-cover" onclick="handleCoverMulai()">MULAI PETUALANGAN</button>
+        <!-- 0. COVER SCREEN (Menyesuaikan Referensi Desain) -->
+        <div id="room-cover" class="screen cover-screen active">
+            <div class="cover-header">
+                <div class="badge-logo">🛵 MATH-O-ANTAR</div>
+                <div class="top-btns">
+                    <button class="icon-btn" onclick="openProfileEdit()">👤 Profil</button>
+                    <button class="icon-btn" onclick="navigateTo('bantuan')">❓ Bantuan</button>
+                    <button class="icon-btn" onclick="openAboutModal()">ℹ️ Tentang</button>
+                </div>
+            </div>
+
+            <div class="cover-main-box">
+                <h1 class="cover-banner-title">SERUNYA BELAJAR MATEMATIKA!</h1>
+                <div class="cover-banner-subtitle">Petualangan Bareng Transportasi Online!</div>
+                
+                <div class="cover-speech-row">
+                    <div class="cover-bubble">
+                        Pernahkah kamu penasaran bagaimana aplikasi menghitung tarif ojek online-mu? Yuk, kita bongkar rahasianya bersama!
+                    </div>
+                    <button class="btn-cover-mulai" onclick="handleCoverMulai()">[ MULAI BELAJAR ]</button>
+                </div>
+            </div>
+
+            <div class="cover-footer-note">
+                (Matematika Berbasis PMRI)
             </div>
         </div>
 
@@ -578,7 +632,7 @@
             </div>
         </div>
 
-        <!-- 1. BERANDA SCREEN (Dashboard Utama) -->
+        <!-- 1. BERANDA SCREEN (Dashboard Utama dengan Misi 1, 2, 3) -->
         <div id="room-beranda" class="screen">
             <div class="beranda-header">
                 <div class="badge-logo">🛵 MATH-O-ANTAR</div>
@@ -765,7 +819,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             loadUserData();
             updateMissionLocks();
-            // Aplikasi dimulai di halaman Cover
             navigateTo('cover');
         });
 
@@ -796,10 +849,8 @@
         // --- COVER & ONBOARDING SYSTEM ---
         function handleCoverMulai() {
             if (!userProfile) {
-                // Jika belum punya profil, tampilkan modal pendaftaran profil
                 openOnboardingModal();
             } else {
-                // Jika profil sudah ada, langsung masuk ke beranda (dashboard)
                 navigateTo('beranda');
                 showToast(`Selamat datang kembali, ${userProfile.nama}!`);
             }
