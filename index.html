@@ -34,7 +34,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, var(--sky-top), var(--sky-bottom));
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -49,20 +49,20 @@
             width: 100%;
             max-width: 1200px;
             min-height: 100vh;
-            background: #14284b;
+            background: #1B2A41;
             display: flex;
             flex-direction: column;
             position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             overflow: hidden;
         }
 
         @media (min-width: 768px) {
             #app-container {
                 height: 94vh;
-                min-height: 720px;
+                min-height: 700px;
                 border-radius: 36px;
-                border: 14px solid #1f365c;
+                border: 12px solid #2B3A55;
             }
         }
 
@@ -70,7 +70,7 @@
         .screen {
             flex: 1;
             position: relative;
-            background: linear-gradient(180deg, #4FC3F7 0%, #B3E5FC 50%, #E0F7FA 100%);
+            background: linear-gradient(180deg, #51D2FF 0%, #E3F8FF 60%, #FFFDF5 100%);
             overflow-y: auto;
             display: none;
             padding: 20px;
@@ -102,103 +102,6 @@
         button:active {
             transform: translateY(2px);
             box-shadow: 2px 2px 0px var(--primary-dark);
-        }
-
-        /* --- DESAIN COVER SCREEN (MENYESUAIKAN REFERENSI GAMBAR) --- */
-        .cover-screen {
-            background: linear-gradient(180deg, #38bdf8 0%, #bae6fd 60%, #fef08a 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px;
-            position: relative;
-        }
-        .cover-header {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 5;
-        }
-        .cover-main-box {
-            background: rgba(255, 255, 255, 0.9);
-            border: 4px solid var(--primary-dark);
-            border-radius: 28px;
-            padding: 30px 24px;
-            width: 100%;
-            max-width: 820px;
-            text-align: center;
-            box-shadow: 6px 8px 0px var(--primary-dark);
-            z-index: 5;
-            margin: auto 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-        .cover-banner-title {
-            font-size: clamp(28px, 5vw, 46px);
-            line-height: 1.1;
-            margin: 0;
-        }
-        .cover-banner-subtitle {
-            background: white;
-            border: 3px solid var(--primary-dark);
-            padding: 6px 20px;
-            border-radius: 16px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            font-size: 16px;
-        }
-        .cover-speech-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-        .cover-bubble {
-            background: white;
-            border: 3px solid var(--primary-dark);
-            padding: 14px 18px;
-            border-radius: 18px;
-            font-weight: 700;
-            font-size: 15px;
-            text-align: left;
-            flex: 1;
-            min-width: 280px;
-            box-shadow: 3px 3px 0px var(--primary-dark);
-            color: var(--text-main);
-            line-height: 1.4;
-        }
-        .btn-cover-mulai {
-            background: linear-gradient(to bottom, var(--btn-green-start), var(--btn-green-end));
-            color: white;
-            font-family: var(--font-title);
-            font-size: 24px;
-            padding: 16px 36px;
-            border-radius: 22px;
-            border: 4px solid var(--primary-dark);
-            box-shadow: 0 6px 0px var(--primary-dark), 0 8px 16px rgba(0,0,0,0.2);
-            cursor: pointer;
-            animation: pulseBtn 2s infinite ease-in-out;
-            white-space: nowrap;
-        }
-        @keyframes pulseBtn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-        }
-        .cover-footer-note {
-            font-family: var(--font-title);
-            font-size: 14px;
-            color: var(--primary-dark);
-            text-align: center;
-            z-index: 5;
-            letter-spacing: 0.5px;
         }
 
         /* Overlay & Toast */
@@ -349,7 +252,7 @@
             margin-top: 8px;
         }
 
-        /* Beranda UI Components (Dashboard) */
+        /* Beranda UI Components */
         .beranda-header {
             display: flex;
             justify-content: space-between;
@@ -439,6 +342,10 @@
             box-shadow: 0 6px 0px var(--primary-dark), 0 10px 20px rgba(0,0,0,0.2);
             cursor: pointer;
             animation: pulseBtn 2s infinite ease-in-out;
+        }
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .missions-grid {
@@ -561,34 +468,6 @@
     <div id="toast-container"></div>
 
     <div id="app-container">
-        <!-- 0. COVER SCREEN (Menyesuaikan Referensi Visual) -->
-        <div id="room-cover" class="screen cover-screen active">
-            <div class="cover-header">
-                <div class="badge-logo">🛵 MATH-O-ANTAR</div>
-                <div class="top-btns">
-                    <button class="icon-btn" onclick="openProfileEdit()">👤 Profil</button>
-                    <button class="icon-btn" onclick="navigateTo('bantuan')">❓ Bantuan</button>
-                    <button class="icon-btn" onclick="openAboutModal()">ℹ️ Tentang</button>
-                </div>
-            </div>
-
-            <div class="cover-main-box">
-                <h1 class="cover-banner-title">SERUNYA BELAJAR MATEMATIKA!</h1>
-                <div class="cover-banner-subtitle">Petualangan Bareng Transportasi Online!</div>
-                
-                <div class="cover-speech-row">
-                    <div class="cover-bubble">
-                        Pernahkah kamu penasaran bagaimana aplikasi menghitung tarif ojek online-mu? Yuk, kita bongkar rahasianya bersama!
-                    </div>
-                    <button class="btn-cover-mulai" onclick="handleCoverMulai()">[ MULAI BELAJAR ]</button>
-                </div>
-            </div>
-
-            <div class="cover-footer-note">
-                (Matematika Berbasis PMRI)
-            </div>
-        </div>
-
         <!-- ONBOARDING / PROFIL MODAL -->
         <div id="profile-modal-backdrop" class="overlay-backdrop" style="display: none;">
             <div class="overlay-box">
@@ -634,8 +513,8 @@
             </div>
         </div>
 
-        <!-- 1. BERANDA SCREEN (Dashboard Utama dengan Misi 1, 2, 3) -->
-        <div id="room-beranda" class="screen">
+        <!-- 1. BERANDA SCREEN -->
+        <div id="room-beranda" class="screen active">
             <div class="beranda-header">
                 <div class="badge-logo">🛵 MATH-O-ANTAR</div>
                 <div class="top-btns">
@@ -820,8 +699,8 @@
         // Inisialisasi saat halaman dimuat
         window.addEventListener('DOMContentLoaded', () => {
             loadUserData();
+            checkOnboarding();
             updateMissionLocks();
-            navigateTo('cover');
         });
 
         function loadUserData() {
@@ -848,25 +727,20 @@
             }
         }
 
-        // --- COVER & ONBOARDING SYSTEM ---
-        function handleCoverMulai() {
-            if (!userProfile) {
-                openOnboardingModal();
-            } else {
-                navigateTo('beranda');
-                showToast(`Selamat datang kembali, ${userProfile.nama}!`);
-            }
-        }
-
-        function openOnboardingModal() {
+        // --- ONBOARDING & PROFIL SYSTEM ---
+        function checkOnboarding() {
             const modal = document.getElementById('profile-modal-backdrop');
             const closeBtn = document.getElementById('profile-close-btn');
             const cancelBtn = document.getElementById('btn-cancel-profile');
 
-            modal.style.display = 'flex';
-            closeBtn.style.display = 'none';
-            cancelBtn.style.display = 'none';
-            document.getElementById('profile-modal-title').innerText = "Kenalan Dulu Yuk!";
+            if (!userProfile) {
+                modal.style.display = 'flex';
+                closeBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+                document.getElementById('profile-modal-title').innerText = "Kenalan Dulu Yuk!";
+            } else {
+                modal.style.display = 'none';
+            }
         }
 
         function openProfileEdit() {
